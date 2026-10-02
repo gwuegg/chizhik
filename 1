@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Презентация проекта НПД-26-1 — Чижик</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-blue: #38bdf8;
+            --accent-amber: #f59e0b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .presentation-container {
+            width: 100%;
+            max-width: 1000px;
+            min-height: 600px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background-color: var(--border-color);
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-amber));
+            width: 16.66%;
+            transition: width 0.3s ease;
+        }
+
+        .slides-wrapper {
+            flex: 1;
+            position: relative;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-header {
+            margin-bottom: 24px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .slide-tag {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--accent-amber);
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-top: 4px;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            color: var(--accent-blue);
+            margin-bottom: 12px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .info-card {
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 18px;
+        }
+
+        .info-card h3 {
+            font-size: 1.1rem;
+            color: var(--accent-blue);
+            margin-bottom: 8px;
+        }
+
+        p, li {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--text-main);
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        ul li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent-amber);
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        .team-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .team-member {
+            background-color: rgba(56, 189, 248, 0.08);
+            border-left: 3px solid var(--accent-blue);
+            padding: 8px 12px;
+            font-size: 0.95rem;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            background-color: rgba(15, 23, 42, 0.8);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-blue);
+            color: #000;
+            border-color: var(--accent-blue);
+        }
+
+        .btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            border-color: var(--border-color);
+        }
+
+        .slide-counter {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .citation-tag {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="presentation-container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="slides-wrapper">
+
+            <!-- Слайд 1 -->
+            <div class="slide active">
+                <div class="slide-header">
+                    <div>
+                        <span class="slide-tag">ПАСПОРТ ПРОЕКТА</span>
+                        <h1>Система мониторинга и борьбы с парафиновыми отложениями в нефтяных скважинах</h1>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="info-card">
+                        <h3>Основные данные</h3>
+                        <p><strong>Проектная команда:</strong> «Чижик»</p>
+                        <p><strong>Академическая группа:</strong> НПД-26-1</p>
+                        <p><strong>Преподаватель:</strong> Петряков Виталий Александрович</p>
+                        <p><strong>Перспективный рынок:</strong> Технологический рынок</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Состав проектной команды</h3>
+                        <div class="team-list">
+                            <div class="team-member">1. Киреев А. Е.</div>
+                            <div class="team-member">2. Малинин М. О.</div>
+                            <div class="team-member">3. Мальцев А. Д.</div>
+                            <div class="team-member">4. Мальцев Д. Д.</div>
+                            <div class="team-member">5. Миронов Н. А.</div>
+                            <div class="team-member">6. Стриж Э. П.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 2 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div>
+                        <span class="slide-tag">ПРОБЛЕМА</span>
+                        <h1>Описание выявленной проблемы</h1>
+                    </div>
+                </div>
+                <div class="grid-3">
+                    <div class="info-card">
+                        <h3>Суть проблемы</h3>
+                        <p>В нефтяных скважинах при снижении температуры нефти ниже точки насыщения парафином на стенках насосно-компрессорных труб и внутрискважинном оборудовании образуются парафиновые отложения.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Проявления</h3>
+                        <p>Уменьшается проходное сечение, растёт давление, снижается дебит скважины.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Причина задержки</h3>
+                        <p>Существующие методы (химическая обработка, механическая очистка, тепловые методы) применяются с задержкой, потому что нет постоянного мониторинга начала образования отложений.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 3 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div>
+                        <span class="slide-tag">АНАЛИЗ ВОЗДЕЙСТВИЯ</span>
+                        <h1>Субъекты воздействия и последствия</h1>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="info-card">
+                        <h3>Субъекты воздействия</h3>
+                        <ul>
+                            <li>Операторы добычи</li>
+                            <li>Инженеры по добыче</li>
+                            <li>Службы по повышению нефтеотдачи</li>
+                            <li>Компании-недропользователи, теряющие добычу и несущие дополнительные затраты</li>
+                        </ul>
+                    </div>
+                    <div class="info-card">
+                        <h3>Негативные последствия и издержки</h3>
+                        <ul>
+                            <li>Снижение суточного дебита скважин</li>
+                            <li>Частые остановки на очистку</li>
+                            <li>Рост операционных затрат на химию и технику</li>
+                            <li>Увеличение риска аварийных ситуаций</li>
+                            <li>Недополучение нефти и снижение экономической эффективности</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 4 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div>
+                        <span class="slide-tag">ОБЗОР РЫНКА</span>
+                        <h1>Анализ рынка и существующих решений</h1>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="info-card">
+                        <h3>Рыночный ландшафт</h3>
+                        <p>На многих месторождениях России (особенно в Западной Сибири) парафиновые отложения — частая причина снижения дебита скважин.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Существующие методы и их недостатки</h3>
+                        <p><strong>Основные решения:</strong> химические реагенты, механическая очистка и тепловые методы.</p>
+                        <p style="margin-top: 10px;"><strong>Ключевой недостаток:</strong> Все они применяются уже после появления отложений (не заранее), требуют остановок скважин или постоянных затрат.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 5 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div>
+                        <span class="slide-tag">АКТУАЛЬНОСТЬ</span>
+                        <h1>Верификация проблемы и Целевая аудитория</h1>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="info-card">
+                        <h3>Подтверждение актуальности</h3>
+                        <p>Проблема подтверждается практикой почти всех нефтяных компаний, работающих с парафинистой нефтью.</p>
+                        <p style="margin-top: 10px;">В отчётах регулярно указываются потери добычи и дополнительные затраты именно из-за парафина.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Целевая аудитория</h3>
+                        <ul>
+                            <li>Нефтяные компании («Роснефть», «Газпром нефть», «Лукойл», «Сургутнефтегаз» и другие)</li>
+                            <li>Инженеры по добыче и операторы скважин</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Слайд 6 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div>
+                        <span class="slide-tag">КОНЦЕПЦИЯ</span>
+                        <h1>Аннотация и образ решения</h1>
+                    </div>
+                </div>
+                <div class="grid-3">
+                    <div class="info-card">
+                        <h3>Выявленная возможность</h3>
+                        <p>Создать систему, которая замечает начало отложений заранее и сразу их устраняет.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Предлагаемая система</h3>
+                        <p>С помощью датчиков температуры и давления вовремя замечается начало отложений, а локальный нагрев их устраняет.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Потенциальная полезность</h3>
+                        <p>Скважины работают без частых остановок, добыча становится стабильнее, а затраты на очистку и химию снижаются.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="controls">
+            <button class="btn" id="prevBtn" onclick="changeSlide(-1)" disabled>← Назад</button>
+            <span class="slide-counter" id="slideCounter">Слайд 1 из 6</span>
+            <button class="btn" id="nextBtn" onclick="changeSlide(1)">Вперед →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressFill = document.getElementById('progressFill');
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentSlide);
+            });
+
+            slideCounter.textContent = `Слайд ${currentSlide + 1} из ${totalSlides}`;
+            progressFill.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = 0;
+            if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
+            updateSlide();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                changeSlide(-1);
+            }
+        });
+    </script>
+</body>
+</html>
